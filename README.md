@@ -1,2 +1,5 @@
 # Web_Development
-HTML, CSS, Javascript, and PHP
+- [X] HTML
+- [X] CSS
+- [X] Javascript
+- [X] PHP
