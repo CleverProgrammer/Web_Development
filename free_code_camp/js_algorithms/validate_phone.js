@@ -17,6 +17,7 @@
 // true
 // > telephoneCheck("2 (757) 622-7382")
 // false
+
 function telephoneCheck(number) {
     if (number.indexOf('(') >= 0) {
         if ((number.indexOf(')') - number.indexOf('(')) <= 4) {
