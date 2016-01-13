@@ -13,6 +13,7 @@ function directionsRequest(origin, destination) {
     };
 }
 
+var limiter = new Bottleneck(9, 1000);
 function googlePromise() {
     return new Promise(function (resolve, reject) {
 
@@ -26,7 +27,7 @@ function googlePromise() {
             var request = directionsRequest("Toronto", destination);
             var directionsService = new google.maps.DirectionsService();
 
-            directionsService.route(request, function (response, status) {
+            limiter.submit(directionsService.route, request, function (response, status) {
                 if (status === google.maps.DirectionsStatus.OK) {
                     console.log("Google directions request was successful!");
                     console.log(response);
@@ -52,7 +53,5 @@ function error(errorMessage) {
     alert("Failed!", errorMessage);
 }
 
-var limiter = new Bottleneck(9, 1000);
-
-limiter.schedule(googlePromise, success, error);
-    // googlePromise().then(success, error);
+// limiter.schedule(googlePromise, success, error);
+googlePromise().then(success, error);
