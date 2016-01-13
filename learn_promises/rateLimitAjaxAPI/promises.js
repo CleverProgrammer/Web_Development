@@ -13,7 +13,7 @@ function directionsRequest(origin, destination) {
     };
 }
 
-var limiter = new Bottleneck(9, 1000);
+var limiter = new Bottleneck(1, 150);
 function googlePromise() {
     return new Promise(function (resolve, reject) {
 
@@ -23,12 +23,15 @@ function googlePromise() {
             'New Jersey', '9053 laramie ave', 'pleasant hill', 'pleasant ridge'
         ];
 
+        var counter = 0;
         destinations.forEach(function (destination) {
             var request = directionsRequest("Toronto", destination);
             var directionsService = new google.maps.DirectionsService();
 
             limiter.submit(directionsService.route, request, function (response, status) {
                 if (status === google.maps.DirectionsStatus.OK) {
+                    counter += 1;
+                    console.log("Address ", counter, ": ", destination);
                     console.log("Google directions request was successful!");
                     console.log(response);
                     resolve(response)
